@@ -10,6 +10,16 @@ function Square(props) {
   );
 }
 
+function Position(props) {
+  if (props.move === 0) {
+    return null;
+  } else {
+    return (
+      <span> ({props.step.position.x}, {props.step.position.y}) </span>
+    )
+  }
+}
+
 class Board extends React.Component {
   renderSquare(i) {
     return (
@@ -49,6 +59,7 @@ class Game extends React.Component {
     this.state = {
       history: [{
         squares: Array(9).fill(null),
+        position: {x: null, y: null},
       }],
       xIsNext: true,
       stepNumber: 0,
@@ -66,6 +77,10 @@ class Game extends React.Component {
     this.setState({
       history: history.concat([{
         squares: squares,
+        position: {
+          x: this.calculateRow(i),
+          y: this.calculateCol(i)
+        }
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
@@ -80,6 +95,26 @@ class Game extends React.Component {
     });
   }
 
+  calculateCol(i) {
+    if ([0, 3, 6].includes(i)) {
+      return 1;
+    } else if ([1, 4, 7].includes(i)) {
+      return 2;
+    } else if ([2, 5, 8].includes(i)) {
+      return 3;
+    }
+  }
+
+  calculateRow(i) {
+    if ([0, 1, 2].includes(i)) {
+      return 1;
+    } else if ([3, 4, 5].includes(i)) {
+      return 2;
+    } else if ([6, 7, 8].includes(i)) {
+      return 3;
+    }
+  }
+
   render() {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
@@ -92,6 +127,7 @@ class Game extends React.Component {
       return (
         <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <Position move={move} step={step}/>
         </li>
       );
     })
