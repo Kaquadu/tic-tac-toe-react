@@ -36,6 +36,11 @@ ol, ul {
   outline: none;
 }
 
+.square-winner {
+  background: #adebad;
+  border: 1px solid #378805;
+}
+
 .kbd-navigation .square:focus {
   background: #ddd;
 }
